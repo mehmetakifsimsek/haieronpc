@@ -1,0 +1,3244 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haier hOn — Akıllı İklimlendirme Kontrol Merkezi</title>
+<style>
+  :root[data-theme="dark"] {
+    --bg-base: #070d19;
+    --bg-grad-1: #0b162c;
+    --bg-grad-2: #091224;
+    --orb-1: rgba(37, 99, 235, 0.42);
+    --orb-2: rgba(6, 182, 212, 0.30);
+    --orb-3: rgba(99, 102, 241, 0.26);
+    --glass-surface: rgba(15, 26, 48, 0.66);
+    --glass-elevated: rgba(23, 38, 68, 0.64);
+    --glass-hover: rgba(32, 52, 92, 0.78);
+    --glass-Subtle: rgba(12, 21, 40, 0.52);
+    --glass-border: rgba(148, 187, 255, 0.14);
+    --glass-border-strong: rgba(56, 189, 248, 0.42);
+    --glass-highlight: rgba(255, 255, 255, 0.07);
+    --text-primary: #f1f6ff;
+    --text-secondary: #9bb3d6;
+    --text-muted: #647da3;
+    --accent-primary: #38bdf8;
+    --accent-blue: #2563eb;
+    --accent-soft: rgba(56, 189, 248, 0.15);
+    --accent-glow: rgba(56, 189, 248, 0.35);
+    --hero-grad: linear-gradient(135deg, rgba(37, 99, 235, 0.92) 0%, rgba(29, 78, 216, 0.88) 52%, rgba(8, 145, 178, 0.88) 100%);
+    --status-ok: #10b981;
+    --status-ok-soft: rgba(16, 185, 129, 0.15);
+    --status-ok-border: rgba(16, 185, 129, 0.40);
+    --status-warn: #f59e0b;
+    --status-unsupported-bg: rgba(10, 18, 34, 0.42);
+    --status-unsupported-border: rgba(100, 125, 163, 0.12);
+    --status-unsupported-text: #4b607f;
+    --shadow-glass: 0 20px 50px -15px rgba(2, 6, 23, 0.72), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+    --shadow-tile-active: 0 10px 26px -6px rgba(37, 99, 235, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
+    --dial-track: rgba(148, 187, 255, 0.14);
+    --tooltip-bg: rgba(9, 16, 32, 0.96);
+    --tooltip-border: rgba(56, 189, 248, 0.35);
+  }
+
+  :root[data-theme="light"] {
+    --bg-base: #dceafe;
+    --bg-grad-1: #e4f0ff;
+    --bg-grad-2: #d2e4ff;
+    --orb-1: rgba(59, 130, 246, 0.34);
+    --orb-2: rgba(14, 165, 233, 0.28);
+    --orb-3: rgba(99, 102, 241, 0.22);
+    --glass-surface: rgba(255, 255, 255, 0.68);
+    --glass-elevated: rgba(255, 255, 255, 0.82);
+    --glass-hover: rgba(255, 255, 255, 0.95);
+    --glass-Subtle: rgba(241, 247, 255, 0.62);
+    --glass-border: rgba(255, 255, 255, 0.78);
+    --glass-border-strong: rgba(37, 99, 235, 0.45);
+    --glass-highlight: rgba(255, 255, 255, 0.9);
+    --text-primary: #0d1f40;
+    --text-secondary: #3b557d;
+    --text-muted: #6983aa;
+    --accent-primary: #2563eb;
+    --accent-blue: #1d4ed8;
+    --accent-soft: rgba(37, 99, 235, 0.11);
+    --accent-glow: rgba(37, 99, 235, 0.26);
+    --hero-grad: linear-gradient(135deg, #2563eb 0%, #3b82f6 55%, #06b6d4 100%);
+    --status-ok: #059669;
+    --status-ok-soft: rgba(5, 150, 105, 0.12);
+    --status-ok-border: rgba(5, 150, 105, 0.35);
+    --status-warn: #d97706;
+    --status-unsupported-bg: rgba(226, 236, 252, 0.55);
+    --status-unsupported-border: rgba(148, 163, 184, 0.28);
+    --status-unsupported-text: #8ca0be;
+    --shadow-glass: 0 18px 42px -12px rgba(30, 64, 175, 0.14), inset 0 1px 0 0 rgba(255, 255, 255, 0.85);
+    --shadow-tile-active: 0 12px 26px -6px rgba(37, 99, 235, 0.32), inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+    --dial-track: rgba(37, 99, 235, 0.13);
+    --tooltip-bg: rgba(13, 31, 64, 0.96);
+    --tooltip-border: rgba(59, 130, 246, 0.4);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "Segoe UI Variable Display", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(circle at 15% 15%, var(--bg-grad-1), var(--bg-base) 65%, var(--bg-grad-2));
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.45;
+    overflow-x: hidden;
+    position: relative;
+    transition: background 0.35s ease, color 0.25s ease;
+  }
+
+  .mono {
+    font-family: "Cascadia Mono", "Consolas", "SFMono-Regular", monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ==========================================================================
+     ANIMATED AMBIENT BLURRED BACKGROUND ORBS
+     ========================================================================== */
+  .ambient-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .ambient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(85px);
+    will-change: transform;
+  }
+
+  .ambient-orb.orb-1 {
+    width: 520px;
+    height: 520px;
+    background: var(--orb-1);
+    top: -120px;
+    left: -80px;
+    animation: floatOrb1 18s ease-in-out infinite alternate;
+  }
+
+  .ambient-orb.orb-2 {
+    width: 460px;
+    height: 460px;
+    background: var(--orb-2);
+    bottom: -110px;
+    right: -60px;
+    animation: floatOrb2 22s ease-in-out infinite alternate;
+  }
+
+  .ambient-orb.orb-3 {
+    width: 390px;
+    height: 390px;
+    background: var(--orb-3);
+    top: 38%;
+    left: 42%;
+    animation: floatOrb3 16s ease-in-out infinite alternate;
+  }
+
+  @keyframes floatOrb1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(90px, 70px) scale(1.12); }
+  }
+
+  @keyframes floatOrb2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-85px, -65px) scale(1.1); }
+  }
+
+  @keyframes floatOrb3 {
+    0% { transform: translate(-40px, -30px) scale(0.94); }
+    100% { transform: translate(55px, 45px) scale(1.08); }
+  }
+
+  /* ==========================================================================
+     APP SHELL WITH LEFT ICON NAVIGATION RAIL
+     ========================================================================== */
+  .app-shell {
+    position: relative;
+    z-index: 1;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 18px 22px 36px;
+    display: grid;
+    grid-template-columns: 74px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 980px) {
+    .app-shell {
+      grid-template-columns: 1fr;
+      padding: 14px;
+    }
+    .nav-rail {
+      display: none !important;
+    }
+  }
+
+  /* FROSTED LEFT ICON RAIL */
+  .nav-rail {
+    position: sticky;
+    top: 18px;
+    height: calc(100vh - 36px);
+    z-index: 60;
+    background: var(--glass-surface);
+    backdrop-filter: blur(24px) saturate(170%);
+    -webkit-backdrop-filter: blur(24px) saturate(170%);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    padding: 18px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow-glass);
+  }
+
+  .rail-top, .rail-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+  }
+
+  .rail-logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.45);
+    margin-bottom: 8px;
+    user-select: none;
+  }
+
+  .rail-btn {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .rail-btn:hover:not(.active) {
+    background: var(--glass-elevated);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+  }
+
+  .rail-btn.active,
+  .rail-btn.active:hover {
+    background: var(--accent-soft);
+    border-color: var(--glass-border-strong);
+    color: var(--accent-primary);
+    box-shadow: 0 8px 20px -6px var(--accent-glow);
+  }
+
+  .rail-btn.active::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    width: 4px;
+    height: 22px;
+    border-radius: 0 4px 4px 0;
+    background: var(--accent-primary);
+    box-shadow: 0 0 10px var(--accent-primary);
+  }
+
+  /* BOTTOM USER ICON & FROSTED USER ACCOUNT POPOVER */
+  .rail-user-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+  }
+
+  .rail-user-btn {
+    background: var(--glass-elevated);
+    border: 1px solid var(--glass-border);
+  }
+
+  .rail-user-btn .status-dot {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 9px;
+    height: 9px;
+    border: 1.5px solid var(--bg-base);
+  }
+
+  .rail-user-mini-lbl {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    max-width: 58px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .rail-user-popover {
+    position: absolute;
+    left: calc(100% + 14px);
+    bottom: -4px;
+    width: 288px;
+    background: var(--glass-surface);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid var(--glass-border-strong);
+    border-radius: 18px;
+    padding: 15px 16px;
+    box-shadow: var(--shadow-glass);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-8px);
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 120;
+  }
+
+  /* Invisible hover bridge between the rail user icon and the popover card */
+  .rail-user-popover::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -18px;
+    width: 18px;
+  }
+
+  .rail-user-wrap:hover .rail-user-popover,
+  .rail-user-wrap.open .rail-user-popover {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+
+  .user-pop-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .user-pop-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.38);
+  }
+
+  .user-pop-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .user-pop-status {
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--status-ok);
+  }
+
+  .user-pop-status.preview {
+    color: var(--status-warn);
+  }
+
+  .user-pop-email {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 1px;
+  }
+
+  .user-pop-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid var(--glass-border);
+  }
+
+  .btn-pop-action {
+    flex: 1;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-elevated);
+    color: var(--text-primary);
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 7px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.18s ease;
+  }
+
+  .btn-pop-action:hover {
+    border-color: var(--accent-primary);
+    background: var(--glass-hover);
+  }
+
+  .btn-pop-logout {
+    border-color: rgba(239, 68, 68, 0.38);
+    background: rgba(239, 68, 68, 0.14);
+    color: #ef4444;
+  }
+
+  .btn-pop-logout:hover {
+    border-color: #ef4444;
+    background: #ef4444;
+    color: #ffffff;
+  }
+
+  /* ==========================================================================
+     MAIN CONTENT COLUMN & TOP GLASS HEADER
+     ========================================================================== */
+  .main-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  .topbar {
+    background: var(--glass-surface);
+    backdrop-filter: blur(24px) saturate(170%);
+    -webkit-backdrop-filter: blur(24px) saturate(170%);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    box-shadow: var(--shadow-glass);
+  }
+
+  .brand-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-titles {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand-name {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .live-sync-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--status-ok-soft);
+    border: 1px solid var(--status-ok-border);
+    color: var(--status-ok);
+  }
+
+  .live-sync-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--status-ok);
+    animation: pulseLive 1.8s ease-in-out infinite;
+  }
+
+  @keyframes pulseLive {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.35); opacity: 0.55; }
+  }
+
+  .brand-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 1px;
+  }
+
+  /* ROOM / APPLIANCE PILL BAR + CONTROLS */
+  .topbar-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .room-pills-bar {
+    display: inline-flex;
+    align-items: center;
+    background: var(--glass-Subtle);
+    border: 1px solid var(--glass-border);
+    border-radius: 13px;
+    padding: 4px;
+    gap: 4px;
+  }
+
+  .room-pill-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 13px;
+    border-radius: 9px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .room-pill-btn:hover {
+    color: var(--text-primary);
+    background: var(--glass-highlight);
+  }
+
+  .room-pill-btn.active {
+    background: linear-gradient(135deg, #2563eb, #0284c7);
+    color: #ffffff;
+    box-shadow: 0 6px 16px -4px rgba(37, 99, 235, 0.55);
+  }
+
+  .device-selector-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--glass-elevated);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 6px 12px;
+  }
+
+  .device-selector-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+  }
+
+  .device-select {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 12.5px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .device-select option {
+    background: #0f1a30;
+    color: #f1f6ff;
+  }
+
+  .segmented-pill {
+    display: inline-flex;
+    align-items: center;
+    background: var(--glass-Subtle);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 3px;
+    gap: 3px;
+  }
+
+  .seg-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 11px;
+    border-radius: 9px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.18s ease;
+  }
+
+  .seg-btn:hover {
+    color: var(--text-primary);
+  }
+
+  .seg-btn.active {
+    background: var(--glass-elevated);
+    color: var(--text-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    border: 1px solid var(--glass-border);
+  }
+
+  .btn-account {
+    border: 1px solid var(--glass-border);
+    background: var(--glass-elevated);
+    color: var(--text-primary);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-account:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-1px);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--status-ok);
+    box-shadow: 0 0 10px var(--status-ok);
+  }
+
+  .status-dot.preview {
+    background: var(--status-warn);
+    box-shadow: 0 0 10px var(--status-warn);
+  }
+
+  /* ==========================================================================
+     BLUE GRADIENT HERO BANNER (INSPIRED BY REFERENCE IMAGE)
+     ========================================================================== */
+  .hardware-banner {
+    position: relative;
+    overflow: hidden;
+    background: var(--hero-grad);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 24px;
+    padding: 20px 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+    color: #ffffff;
+    box-shadow: 0 22px 48px -14px rgba(29, 78, 216, 0.52), inset 0 1px 0 0 rgba(255, 255, 255, 0.32);
+  }
+
+  .hardware-banner::after {
+    content: "";
+    position: absolute;
+    right: -60px;
+    top: -70px;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 70%);
+    pointer-events: none;
+  }
+
+  .hw-identity {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hw-chip-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .hw-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .hw-model-code {
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+  }
+
+  .hw-series-pill {
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    color: #ffffff;
+  }
+
+  .hw-auto-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.26);
+    border: 1px solid rgba(167, 243, 208, 0.5);
+    color: #ecfdf5;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .hw-meta-bottom {
+    margin-top: 5px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.84);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .hw-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hw-stat-box {
+    background: rgba(15, 23, 42, 0.24);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 15px;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    min-width: 145px;
+  }
+
+  .hw-stat-val {
+    font-size: 17px;
+    font-weight: 800;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .hw-stat-lbl {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.80);
+    margin-top: 2px;
+  }
+
+  /* ==========================================================================
+     DASHBOARD 2-COLUMN GLASS GRID
+     ========================================================================== */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 1120px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .panel {
+    background: var(--glass-surface);
+    backdrop-filter: blur(24px) saturate(170%);
+    -webkit-backdrop-filter: blur(24px) saturate(170%);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 22px;
+    box-shadow: var(--shadow-glass);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid var(--glass-border);
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .panel-title {
+    font-size: 12.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .power-status-pill {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    border: 1px solid var(--glass-border-strong);
+    color: var(--accent-primary);
+    letter-spacing: 0.5px;
+  }
+
+  /* ==========================================================================
+     LEFT PANEL: CIRCULAR GLOWING THERMOSTAT DIAL & SENSORS
+     ========================================================================== */
+  .power-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .unit-status-block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .unit-title {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+  }
+
+  .unit-state-line {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+  }
+
+  .btn-power {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    border: 1.5px solid var(--glass-border);
+    background: var(--glass-elevated);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn-power:hover {
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
+    transform: scale(1.04);
+  }
+
+  .btn-power.on {
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5);
+  }
+
+  /* CIRCULAR THERMOSTAT CORE */
+  .thermostat-core {
+    background: var(--glass-elevated);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    padding: 20px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 18px;
+    position: relative;
+    box-shadow: inset 0 1px 0 0 var(--glass-highlight);
+  }
+
+  .temp-caption {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .dial-stage {
+    position: relative;
+    width: 246px;
+    height: 230px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dial-svg {
+    width: 240px;
+    height: 240px;
+    overflow: visible;
+  }
+
+  .dial-track-arc {
+    fill: none;
+    stroke: var(--dial-track);
+    stroke-width: 12;
+    stroke-linecap: round;
+  }
+
+  .dial-progress-arc {
+    fill: none;
+    stroke: url(#dialBlueGrad);
+    stroke-width: 12;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.45));
+    transition: stroke-dashoffset 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dial-center-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    padding-top: 6px;
+  }
+
+  .temp-value-wrap {
+    pointer-events: auto;
+    display: flex;
+    align-items: flex-start;
+    line-height: 1;
+    cursor: pointer;
+    padding: 6px 14px;
+    border-radius: 14px;
+    border: 1.5px dashed transparent;
+    transition: all 0.18s ease;
+  }
+
+  .temp-value-wrap:hover {
+    border-color: var(--accent-primary);
+    background: var(--accent-soft);
+    transform: scale(1.03);
+  }
+
+  .temp-value {
+    font-size: 58px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    color: var(--text-primary);
+    user-select: none;
+  }
+
+  .temp-direct-input {
+    width: 88px;
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
+    text-align: center;
+    color: var(--text-primary);
+    background: var(--glass-surface);
+    border: 2px solid var(--accent-primary);
+    border-radius: 10px;
+    padding: 2px 4px;
+    outline: none;
+    display: none;
+  }
+
+  .temp-unit {
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--accent-primary);
+    margin-top: 6px;
+    margin-left: 3px;
+  }
+
+  .dial-step-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    margin-top: -12px;
+    margin-bottom: 10px;
+    z-index: 2;
+  }
+
+  .btn-step {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-surface);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+  }
+
+  .btn-step:hover:not(:disabled) {
+    border-color: var(--accent-primary);
+    background: var(--accent-soft);
+    transform: translateY(-2px);
+  }
+
+  .temp-range-badge {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+
+  .temp-edit-hint {
+    font-size: 11px;
+    color: var(--accent-primary);
+    margin-top: 4px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  /* TELEMETRY CARDS */
+  .telemetry-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .telemetry-card {
+    background: var(--glass-elevated);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    box-shadow: inset 0 1px 0 0 var(--glass-highlight);
+  }
+
+  .telemetry-lbl {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .telemetry-val {
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+
+  /* ==========================================================================
+     RIGHT COLUMN: MODES, AIRFLOW & 6-STAGE VERTICAL SWING, HARDWARE MATRIX
+     ========================================================================== */
+  .controls-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .mode-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 11px;
+  }
+
+  @media (max-width: 720px) {
+    .mode-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .ctrl-tile {
+    position: relative;
+    background: var(--glass-elevated);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 15px 12px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    color: var(--text-primary);
+    min-height: 90px;
+  }
+
+  .ctrl-tile:hover:not(.unsupported):not(.active) {
+    border-color: var(--glass-border-strong);
+    background: var(--glass-hover);
+    transform: translateY(-2px);
+  }
+
+  .ctrl-tile.active,
+  .ctrl-tile.active:hover {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.94), rgba(6, 182, 212, 0.88));
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #ffffff;
+    box-shadow: var(--shadow-tile-active);
+  }
+
+  .ctrl-tile.active:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+  }
+
+  .ctrl-tile.unsupported {
+    background: var(--status-unsupported-bg);
+    border-color: var(--status-unsupported-border);
+    color: var(--status-unsupported-text);
+    cursor: not-allowed;
+  }
+
+  .tile-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tile-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  /* AIRFLOW & LOUVER SWING STACK */
+  .airflow-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sub-box {
+    background: var(--glass-elevated);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 16px 18px;
+  }
+
+  .sub-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 13px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .sub-box-title {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .fan-pills {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  @media (max-width: 640px) {
+    .fan-pills {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .pill-btn {
+    border: 1px solid var(--glass-border);
+    background: var(--glass-surface);
+    color: var(--text-primary);
+    border-radius: 12px;
+    padding: 11px 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    text-align: center;
+  }
+
+  .pill-btn:hover:not(.unsupported):not(.active) {
+    border-color: var(--glass-border-strong);
+    background: var(--glass-hover);
+    transform: translateY(-1px);
+  }
+
+  .pill-btn.active,
+  .pill-btn.active:hover {
+    background: linear-gradient(135deg, #2563eb, #0284c7);
+    border-color: rgba(255, 255, 255, 0.42);
+    color: #ffffff;
+    box-shadow: var(--shadow-tile-active);
+  }
+
+  .pill-btn.active:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+  }
+
+  /* 6-STAGE VERTICAL SWING SELECTOR GRID */
+  .vswing-stages-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 9px;
+  }
+
+  @media (max-width: 880px) {
+    .vswing-stages-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .vswing-stages-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .vswing-stage-btn {
+    position: relative;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-surface);
+    color: var(--text-primary);
+    border-radius: 14px;
+    padding: 12px 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    min-height: 88px;
+  }
+
+  .vswing-stage-btn:hover:not(.unsupported):not(.active) {
+    border-color: var(--glass-border-strong);
+    background: var(--glass-hover);
+    transform: translateY(-2px);
+  }
+
+  .vswing-stage-btn.active,
+  .vswing-stage-btn.active:hover {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.94), rgba(6, 182, 212, 0.88));
+    border-color: rgba(255, 255, 255, 0.48);
+    color: #ffffff;
+    box-shadow: var(--shadow-tile-active);
+  }
+
+  .vswing-stage-btn.active:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+  }
+
+  .vswing-stage-btn.unsupported {
+    background: var(--status-unsupported-bg);
+    border-color: var(--status-unsupported-border);
+    color: var(--status-unsupported-text);
+    cursor: not-allowed;
+  }
+
+  .vswing-icon-box {
+    width: 34px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vswing-stage-title {
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.15;
+  }
+
+  .vswing-stage-sub {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.15;
+  }
+
+  .vswing-stage-btn.active .vswing-stage-sub,
+  .vswing-stage-btn.active:hover .vswing-stage-sub {
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  @keyframes oscillateBlade {
+    0%, 100% { transform: rotate(-28deg); }
+    50% { transform: rotate(28deg); }
+  }
+
+  .vswing-auto-blade {
+    transform-origin: 7px 7px;
+    animation: oscillateBlade 2.2s ease-in-out infinite;
+  }
+
+  /* HORIZONTAL SWING ROW */
+  .swing-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 12px 15px;
+    margin-top: 12px;
+    transition: all 0.2s ease;
+  }
+
+  .swing-row.unsupported {
+    background: var(--status-unsupported-bg);
+    border-color: var(--status-unsupported-border);
+    color: var(--status-unsupported-text);
+  }
+
+  .swing-lbl-group {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .swing-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ==========================================================================
+     SPECIAL FUNCTIONS & MODEL HARDWARE CAPABILITY MATRIX
+     ========================================================================== */
+  .filter-tabs {
+    display: inline-flex;
+    background: var(--glass-Subtle);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 3px;
+    gap: 3px;
+  }
+
+  .filter-tab {
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 5px 11px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .filter-tab.active {
+    background: var(--glass-elevated);
+    color: var(--text-primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 780px) {
+    .features-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .feature-card {
+    position: relative;
+    background: var(--glass-elevated);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    min-height: 98px;
+  }
+
+  .feature-card:hover:not(.unsupported):not(.active) {
+    border-color: var(--glass-border-strong);
+    background: var(--glass-hover);
+    transform: translateY(-2px);
+  }
+
+  .feature-card.active,
+  .feature-card.active:hover {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.28), rgba(6, 182, 212, 0.20));
+    border-color: var(--accent-primary);
+    box-shadow: 0 10px 24px -8px var(--accent-glow);
+  }
+
+  .feature-card.active:hover {
+    transform: translateY(-2px);
+  }
+
+  .feature-card.unsupported {
+    background: var(--status-unsupported-bg);
+    border-color: var(--status-unsupported-border);
+    cursor: not-allowed;
+  }
+
+  .feature-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .feature-icon-wrap {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .feature-card.active .feature-icon-wrap {
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4);
+  }
+
+  .feature-card.unsupported .feature-icon-wrap {
+    color: var(--status-unsupported-text);
+    opacity: 0.55;
+  }
+
+  .feature-badges-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cap-badge {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+
+  .cap-badge.on {
+    background: linear-gradient(135deg, #2563eb, #0284c7);
+    color: #ffffff;
+  }
+
+  .cap-badge.supported {
+    background: var(--status-ok-soft);
+    color: var(--status-ok);
+    border: 1px solid var(--status-ok-border);
+  }
+
+  .cap-badge.unsupported {
+    background: transparent;
+    color: var(--status-unsupported-text);
+    border: 1px solid var(--glass-border);
+  }
+
+  .feature-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .feature-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .feature-card.unsupported .feature-name {
+    color: var(--status-unsupported-text);
+  }
+
+  /* INFO "i" BADGE & HOVER TOOLTIP */
+  .info-trigger {
+    position: relative;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border-strong);
+    background: var(--glass-surface);
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 800;
+    font-style: normal;
+    font-family: Georgia, serif;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: help;
+    flex-shrink: 0;
+  }
+
+  .info-trigger:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  .info-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: calc(100% + 10px);
+    right: 0;
+    width: 275px;
+    background: var(--tooltip-bg);
+    backdrop-filter: blur(16px);
+    color: #f8fafc;
+    border: 1px solid var(--tooltip-border);
+    border-radius: 12px;
+    padding: 11px 13px;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.45;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+    z-index: 100;
+    pointer-events: none;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+    text-align: left;
+  }
+
+  .info-trigger:hover .info-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .tooltip-hw-note {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    font-size: 11px;
+    color: #94a3b8;
+  }
+
+  .tooltip-hw-note.ok {
+    color: #34d399;
+  }
+
+  .tooltip-hw-note.no {
+    color: #f87171;
+  }
+
+  /* MODAL FOR CLOUD LOGIN */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 12, 26, 0.72);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+  }
+
+  .modal-backdrop.open {
+    display: flex;
+  }
+
+  .modal-card {
+    background: var(--glass-surface);
+    backdrop-filter: blur(26px);
+    border: 1px solid var(--glass-border-strong);
+    border-radius: 22px;
+    width: 100%;
+    max-width: 430px;
+    padding: 26px;
+    box-shadow: 0 24px 55px rgba(0, 0, 0, 0.6);
+  }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  .modal-desc {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    margin-bottom: 18px;
+  }
+
+  .form-group {
+    margin-bottom: 14px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+
+  .form-input {
+    width: 100%;
+    background: var(--glass-elevated);
+    border: 1px solid var(--glass-border);
+    border-radius: 11px;
+    padding: 10px 13px;
+    color: var(--text-primary);
+    font-size: 13.5px;
+    outline: none;
+  }
+
+  .form-input:focus {
+    border-color: var(--accent-primary);
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--glass-border);
+    background: var(--glass-elevated);
+    color: var(--text-primary);
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    border: none;
+    background: linear-gradient(135deg, #2563eb, #0284c7);
+    color: #ffffff;
+    padding: 9px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .login-error {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 8px;
+    display: none;
+  }
+
+  svg {
+    display: block;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ANIMATED FROSTED BLUR BACKGROUND ORBS -->
+  <div class="ambient-canvas" aria-hidden="true">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+  </div>
+
+  <div class="app-shell">
+    <!-- LEFT VERTICAL ICON NAVIGATION RAIL -->
+    <aside class="nav-rail">
+      <div class="rail-top">
+        <div class="rail-logo">hOn</div>
+        <button type="button" class="rail-btn active" data-nav-target="secOverview" onclick="scrollToSection('secOverview', this)" title="Genel Görünüm">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+        </button>
+        <button type="button" class="rail-btn" data-nav-target="secThermostat" onclick="scrollToSection('secThermostat', this)" title="Termostat &amp; Modlar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+        </button>
+        <button type="button" class="rail-btn" data-nav-target="secAirflow" onclick="scrollToSection('secAirflow', this)" title="6 Kademeli Dikey Salınım &amp; Fan">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+        </button>
+        <button type="button" class="rail-btn" data-nav-target="secFeatures" onclick="scrollToSection('secFeatures', this)" title="Özel Fonksiyonlar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        </button>
+      </div>
+      <div class="rail-bottom">
+        <div class="rail-user-wrap" id="railUserWrap">
+          <button type="button" class="rail-btn rail-user-btn" id="btnRailUser" onclick="toggleUserPopover(event)" title="hOn Bulut Hesabı">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="status-dot preview" id="dotAccount"></span>
+          </button>
+          <div class="rail-user-mini-lbl" id="lblRailUserMini">Hesap</div>
+
+          <!-- LOGGED-IN USER POPOVER & LOGOUT ACTION -->
+          <div class="rail-user-popover" id="railUserPopover" onclick="event.stopPropagation()">
+            <div class="user-pop-header">
+              <div class="user-pop-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div class="user-pop-meta">
+                <div class="user-pop-status" id="lblAccountStatus">hOn Bulut Aktif</div>
+                <div class="user-pop-email mono" id="lblAccountBtn">hOn Bulut Hesabı</div>
+              </div>
+            </div>
+            <div class="user-pop-actions">
+              <button type="button" class="btn-pop-action" id="btnSwitchAccount" onclick="openLoginModal()">
+                <span id="lblSwitchAccountBtn">Hesap Değiştir</span>
+              </button>
+              <button type="button" class="btn-pop-action btn-pop-logout" id="btnLogoutAccount" onclick="logoutCloudAccount()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span id="lblLogoutBtn">Çıkış Yap</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN STAGE -->
+    <div class="main-stage" id="secOverview">
+
+      <!-- TOP GLASS HEADER -->
+      <header class="topbar">
+        <div class="brand-group">
+          <div class="brand-titles">
+            <div class="brand-name">
+              <span>Haier Smart Climate Studio</span>
+              <span class="live-sync-pill">
+                <span class="live-sync-dot"></span>
+                <span id="lblLiveSyncBadge">1 sn Canlı Senkron</span>
+              </span>
+            </div>
+            <div class="brand-sub" id="lblTopSubtitle">Doğrudan Bulut &amp; Yerel Donanım Arayüzü</div>
+          </div>
+        </div>
+
+        <div class="topbar-controls">
+          <!-- CONNECTED AC SELECTOR (LISTBOX) -->
+          <div class="device-selector-wrap">
+            <span class="device-selector-label" id="lblSelectDevice">CİHAZ:</span>
+            <select id="selAppliance" class="device-select" onchange="onSelectAppliance(this.value)"></select>
+          </div>
+
+          <!-- THEME SWITCHER (GÜNDÜZ / GECE) -->
+          <div class="segmented-pill">
+            <button type="button" class="seg-btn" id="btnThemeLight" onclick="setTheme('light')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+              <span id="lblDay">Gündüz</span>
+            </button>
+            <button type="button" class="seg-btn active" id="btnThemeDark" onclick="setTheme('dark')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <span id="lblNight">Gece</span>
+            </button>
+          </div>
+
+          <!-- LANGUAGE SWITCHER (TR / EN) -->
+          <div class="segmented-pill">
+            <button type="button" class="seg-btn active" id="btnLangTr" onclick="setLang('tr')">TR</button>
+            <button type="button" class="seg-btn" id="btnLangEn" onclick="setLang('en')">EN</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- GRADIENT BLUE HERO BANNER -->
+      <section class="hardware-banner">
+        <div class="hw-identity">
+          <div class="hw-chip-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/>
+            </svg>
+          </div>
+          <div>
+            <div class="hw-meta-top">
+              <span class="hw-model-code mono" id="hwModelCode">AS35RBAHRA-4</span>
+              <span class="hw-series-pill" id="hwSeriesName">Revive</span>
+              <span class="hw-auto-badge" id="hwAutoBadge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span id="lblAutoDetectBadge">Arkaplan Model Tanıma Aktif</span>
+              </span>
+            </div>
+            <div class="hw-meta-bottom">
+              <span class="mono" id="hwMacAddress">MAC: --</span>
+              <span class="mono" id="hwFirmware">FW: --</span>
+              <span id="hwDetectionSource">Donanım Şeması: Otomatik</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hw-stats">
+          <div class="hw-stat-box">
+            <div class="hw-stat-val mono">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <span id="valSupportedCount">0</span>
+            </div>
+            <div class="hw-stat-lbl" id="lblSupportedStat">Kullanılabilir Özellik</div>
+          </div>
+          <div class="hw-stat-box">
+            <div class="hw-stat-val mono">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+              <span id="valUnsupportedCount">0</span>
+            </div>
+            <div class="hw-stat-lbl" id="lblUnsupportedStat">Bu Modelde Bulunmayan</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAIN 2-COLUMN DASHBOARD -->
+      <div class="dashboard-grid" id="secThermostat">
+        <!-- LEFT PANEL: CIRCULAR THERMOSTAT & TELEMETRY -->
+        <section class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+              <span id="lblClimateUnitPanel">İKLİMLENDİRME ÜNİTESİ</span>
+            </div>
+            <span class="power-status-pill mono" id="lblPowerBadge">ÇALIŞIYOR</span>
+          </div>
+
+          <div class="power-row">
+            <div class="unit-status-block">
+              <div class="unit-title" id="lblUnitNickName">Alt Kat</div>
+              <div class="unit-state-line" id="lblActiveOperationSummary">Soğutma · Otomatik Fan</div>
+            </div>
+
+            <button type="button" class="btn-power on" id="btnPower" onclick="togglePower()" title="Güç Aç / Kapat">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+                <line x1="12" y1="2" x2="12" y2="12"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- CIRCULAR ANIMATED THERMOSTAT DIAL -->
+          <div class="thermostat-core">
+            <div class="temp-caption" id="lblTargetTempCaption">HEDEF SICAKLIK</div>
+
+            <div class="dial-stage">
+              <svg class="dial-svg" viewBox="0 0 240 240">
+                <defs>
+                  <linearGradient id="dialBlueGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#2563eb"/>
+                    <stop offset="55%" stop-color="#38bdf8"/>
+                    <stop offset="100%" stop-color="#67e8f9"/>
+                  </linearGradient>
+                </defs>
+                <!-- 270 degree background arc (from 135 deg to 405 deg, r=92) -->
+                <path class="dial-track-arc" d="M 54.95 185.05 A 92 92 0 1 1 185.05 185.05"/>
+                <!-- 270 degree animated progress arc (circumference for 270 deg at r=92 is 433.54) -->
+                <path
+                  id="dialArcProgress"
+                  class="dial-progress-arc"
+                  d="M 54.95 185.05 A 92 92 0 1 1 185.05 185.05"
+                  stroke-dasharray="433.54"
+                  stroke-dashoffset="216.77"
+                />
+              </svg>
+
+              <div class="dial-center-overlay">
+                <div class="temp-value-wrap" id="tempValueWrap" onclick="startTempEdit()">
+                  <span class="temp-value mono" id="valTargetTemp">23</span>
+                  <input
+                    type="text"
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    maxlength="2"
+                    autocomplete="off"
+                    id="inpTargetTemp"
+                    class="temp-direct-input mono"
+                    onclick="event.stopPropagation()"
+                    onkeydown="onTempInputKeyDown(event)"
+                    oninput="onTempInputSanitize(this)"
+                    onblur="commitTempEdit(false)"
+                  >
+                  <span class="temp-unit mono">°C</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dial-step-bar">
+              <button type="button" class="btn-step" id="btnTempDown" onclick="stepTemperature(-1)" title="-1°C">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <button type="button" class="btn-step" id="btnTempUp" onclick="stepTemperature(1)" title="+1°C">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+
+            <div class="temp-range-badge mono" id="lblTempRangeInfo">Soğutma Modu Sınırı: 16°C – 30°C (Adım: 1°C)</div>
+            <div class="temp-edit-hint" id="lblTempEditHint">Sayısal derece girmek için sıcaklığa tıklayın (Enter ile onayla)</div>
+          </div>
+
+          <!-- ROOM SENSORS -->
+          <div class="telemetry-grid">
+            <div class="telemetry-card">
+              <div class="telemetry-lbl">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <span id="lblIndoorSensor">İç Ortam Sıcaklığı</span>
+              </div>
+              <div class="telemetry-val mono" id="valIndoorTemp">25.5 °C</div>
+            </div>
+
+            <div class="telemetry-card">
+              <div class="telemetry-lbl">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                <span id="lblIndoorHumidity">İç Ortam Nemi</span>
+              </div>
+              <div class="telemetry-val mono" id="valIndoorHum">%46</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT STACK: OPERATING MODES, 6-STAGE VERTICAL SWING & FAN, HARDWARE MATRIX -->
+        <div class="controls-stack">
+
+          <!-- OPERATING MODES -->
+          <section class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span id="lblSectionModes">ÇALIŞMA MODU</span>
+              </div>
+            </div>
+            <div class="mode-grid" id="gridModes"></div>
+          </section>
+
+          <!-- FAN SPEED & 6-STAGE VERTICAL LOUVER SWING -->
+          <section class="panel" id="secAirflow">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+                <span id="lblSectionAirflow">HAVA AKIŞI VE KANAT YÖNLENDİRME</span>
+              </div>
+            </div>
+
+            <div class="airflow-stack">
+              <!-- FAN SPEED -->
+              <div class="sub-box">
+                <div class="sub-box-header">
+                  <span class="sub-box-title" id="lblFanSpeedSub">FAN KADEMESİ</span>
+                </div>
+                <div class="fan-pills" id="gridFan"></div>
+              </div>
+
+              <!-- 6-STAGE VERTICAL SWING + HORIZONTAL SWING -->
+              <div class="sub-box">
+                <div class="sub-box-header">
+                  <span class="sub-box-title">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
+                    <span id="lblVerticalSwingTitle">DİKEY KANAT SALINIMI (5 AÇI KADEMESİ + OTO SALINIM)</span>
+                  </span>
+                  <div class="swing-actions">
+                    <span class="cap-badge on" id="badgeVerticalSwingActive">KADEME 3</span>
+                    <span class="info-trigger" onclick="event.stopPropagation()">i
+                      <span class="info-tooltip">
+                        <div id="tooltipVerticalSwingDesc">5 sabit kanat açısı kademesi (1: En Üst – 5: En Alt) veya 1'den 5'e sürekli yukarı-aşağı otomatik salınım modu seçilebilir.</div>
+                        <div class="tooltip-hw-note ok" id="tooltipVerticalSwingHw">Bu klima modeli 6 dikey kanat kademesini desteklemektedir.</div>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 6 FUNCTIONAL VERTICAL SWING MODES -->
+                <div class="vswing-stages-grid" id="gridVerticalSwingStages"></div>
+
+                <!-- HORIZONTAL SWING (MODEL DEPENDENT) -->
+                <div id="gridSwing"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SPECIAL FUNCTIONS & MODEL HARDWARE MATRIX -->
+          <section class="panel" id="secFeatures">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                <span id="lblSectionSpecial">ÖZEL FONKSİYONLAR VE MODEL DONANIM YETENEKLERİ</span>
+              </div>
+
+              <div class="filter-tabs">
+                <button type="button" class="filter-tab active" id="tabFilterAll" onclick="setFeatureFilter('all')">Tümü</button>
+                <button type="button" class="filter-tab" id="tabFilterSupported" onclick="setFeatureFilter('supported')">Kullanılabilir</button>
+                <button type="button" class="filter-tab" id="tabFilterUnsupported" onclick="setFeatureFilter('unsupported')">Bu Modelde Yok</button>
+              </div>
+            </div>
+
+            <div class="features-grid" id="gridFeatures"></div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOUD LOGIN MODAL -->
+  <div class="modal-backdrop" id="modalLogin">
+    <div class="modal-card">
+      <div class="modal-title" id="lblModalTitle">Haier hOn Bulut Girişi</div>
+      <div class="modal-desc" id="lblModalDesc">Hesabınıza bağlı tüm klimalar otomatik taranır ve her klimanın model numarasına göre donanım yetenekleri arkaplanda tespit edilir.</div>
+
+      <div class="form-group">
+        <label class="form-label" id="lblEmail">E-posta Adresi</label>
+        <input type="email" id="inpEmail" class="form-input" placeholder="ornek@eposta.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="lblPassword">Şifre</label>
+        <input type="password" id="inpPassword" class="form-input" placeholder="••••••••">
+      </div>
+      <div class="login-error" id="lblLoginError"></div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="closeLoginModal()" id="btnCancelModal">Kapat</button>
+        <button type="button" class="btn-primary" onclick="submitCloudLogin()" id="btnSubmitModal">Bağlan</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const queryLang = urlParams.get('lang');
+  const queryTheme = urlParams.get('theme');
+
+  let currentLang = (queryLang === 'en' || queryLang === 'tr')
+    ? queryLang
+    : (localStorage.getItem('hon_lang') || 'tr');
+  let currentTheme = (queryTheme === 'light' || queryTheme === 'dark')
+    ? queryTheme
+    : (localStorage.getItem('hon_theme') || 'dark');
+  let currentFilter = 'all';
+  let appState = null;
+
+  let isProgrammaticScroll = false;
+  let programmaticScrollTimer = null;
+
+  function setActiveRailButton(targetId) {
+    document.querySelectorAll('.nav-rail .rail-top .rail-btn[data-nav-target]').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-nav-target') === targetId);
+    });
+  }
+
+  function scrollToSection(id, btnEl) {
+    const el = document.getElementById(id);
+    if (el) {
+      isProgrammaticScroll = true;
+      if (programmaticScrollTimer) clearTimeout(programmaticScrollTimer);
+      setActiveRailButton(id);
+      if (id === 'secOverview') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      programmaticScrollTimer = setTimeout(() => {
+        isProgrammaticScroll = false;
+        updateActiveNavOnScroll();
+      }, 650);
+    }
+  }
+
+  function updateActiveNavOnScroll() {
+    if (isProgrammaticScroll) return;
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const vh = window.innerHeight || 800;
+    const docH = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+
+    if (scrollY < 50) {
+      setActiveRailButton('secOverview');
+      return;
+    }
+
+    if (scrollY + vh >= docH - 35) {
+      setActiveRailButton('secFeatures');
+      return;
+    }
+
+    const secFeatures = document.getElementById('secFeatures');
+    const secAirflow = document.getElementById('secAirflow');
+    const secThermostat = document.getElementById('secThermostat');
+
+    if (secFeatures && secFeatures.getBoundingClientRect().top <= vh * 0.50) {
+      setActiveRailButton('secFeatures');
+    } else if (secAirflow && secAirflow.getBoundingClientRect().top <= vh * 0.46) {
+      setActiveRailButton('secAirflow');
+    } else if (secThermostat && secThermostat.getBoundingClientRect().top <= vh * 0.62) {
+      setActiveRailButton('secThermostat');
+    } else {
+      setActiveRailButton('secOverview');
+    }
+  }
+
+  window.addEventListener('scroll', updateActiveNavOnScroll, { passive: true });
+  window.addEventListener('resize', updateActiveNavOnScroll, { passive: true });
+
+  function toggleUserPopover(e) {
+    if (e) e.stopPropagation();
+    const wrap = document.getElementById('railUserWrap');
+    if (wrap) wrap.classList.toggle('open');
+  }
+
+  document.addEventListener('click', () => {
+    const wrap = document.getElementById('railUserWrap');
+    if (wrap) wrap.classList.remove('open');
+  });
+
+  // CUSTOM SVG LOUVER ANGLE ILLUSTRATIONS FOR THE 6 VERTICAL SWING MODES
+  function getVerticalStageSvg(angleDeg, isAuto) {
+    if (isAuto) {
+      return `
+        <svg width="32" height="28" viewBox="0 0 32 28" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 4h12a3 3 0 0 1 3 3v3H5V4z" opacity="0.45"/>
+          <g class="vswing-auto-blade">
+            <line x1="7" y1="7" x2="23" y2="15" stroke-width="2.3"/>
+            <circle cx="7" cy="7" r="1.8" fill="currentColor"/>
+          </g>
+          <path d="M26 7v13" stroke-width="1.6"/>
+          <polyline points="23.5 9.5 26 7 28.5 9.5" stroke-width="1.6"/>
+          <polyline points="23.5 17.5 26 20 28.5 17.5" stroke-width="1.6"/>
+        </svg>
+      `;
+    }
+    const rad = (angleDeg * Math.PI) / 180;
+    const x1 = 7, y1 = 10;
+    const len = 16;
+    const x2 = (x1 + Math.cos(rad) * len).toFixed(1);
+    const y2 = (y1 + Math.sin(rad) * len).toFixed(1);
+    const rayX2 = (x1 + Math.cos(rad) * (len + 6)).toFixed(1);
+    const rayY2 = (y1 + Math.sin(rad) * (len + 6)).toFixed(1);
+    return `
+      <svg width="32" height="28" viewBox="0 0 32 28" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 3h13a3 3 0 0 1 3 3v3H4V3z" opacity="0.4"/>
+        <circle cx="${x1}" cy="${y1}" r="1.9" fill="currentColor"/>
+        <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke-width="2.4"/>
+        <line x1="${x2}" y1="${y2}" x2="${rayX2}" y2="${rayY2}" stroke-dasharray="2 2" opacity="0.75"/>
+      </svg>
+    `;
+  }
+
+  // CLEAN VECTOR SVG LIBRARY
+  const ICONS = {
+    auto: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>',
+    cool: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg>',
+    heat: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
+    dry: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>',
+    fan: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10.827 16.379a6.082 6.082 0 0 1-8.618-7.002l5.412 1.45a6.082 6.082 0 0 1 7.002-8.618l-1.45 5.412a6.082 6.082 0 0 1 8.618 7.002l-5.412-1.45a6.082 6.082 0 0 1-7.002 8.618l1.45-5.412Z"/><circle cx="12" cy="12" r="2"/></svg>',
+    swingV: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>',
+    swingH: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 7-5 5 5 5"/><path d="m15 7 5 5-5 5"/></svg>',
+    turbo: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+    silent: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
+    sleep: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+    health: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>',
+    selfClean: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/></svg>',
+    steri56: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>',
+    eco: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>',
+    vacation: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+    displayLed: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+    ecoSensor: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>'
+  };
+
+  // 6 VERTICAL SWING STAGES (Haier Protocol enumValues: 2, 4, 5, 6, 7, 8)
+  const VERTICAL_SWING_STAGES = [
+    { val: 2, aliases: [1, 2], angle: -24, isAuto: false, key: 's1' },
+    { val: 4, aliases: [4],    angle: -10, isAuto: false, key: 's2' },
+    { val: 5, aliases: [3, 5], angle: 6,   isAuto: false, key: 's3' },
+    { val: 6, aliases: [6],    angle: 22,  isAuto: false, key: 's4' },
+    { val: 7, aliases: [7],    angle: 38,  isAuto: false, key: 's5' },
+    { val: 8, aliases: [8],    angle: 0,   isAuto: true,  key: 'auto' }
+  ];
+
+  const I18N = {
+    tr: {
+      liveSyncBadge: "1 sn Canlı Senkron",
+      topSubtitle: "Doğrudan Bulut & Yerel Donanım Arayüzü",
+      selectDevice: "CİHAZ:",
+      day: "Gündüz",
+      night: "Gece",
+      accountPreview: "hOn Bulut Girişi",
+      accountConnected: "Bulut Aktif",
+      autoDetectBadge: "Arkaplan Model Tanıma Aktif",
+      supportedStat: "Kullanılabilir Özellik",
+      unsupportedStat: "Bu Modelde Bulunmayan",
+      climateUnitPanel: "İKLİMLENDİRME ÜNİTESİ",
+      powerOn: "ÇALIŞIYOR",
+      powerOff: "KAPALI",
+      targetTempCaption: "HEDEF SICAKLIK",
+      indoorSensor: "İç Ortam Sıcaklığı",
+      indoorHumidity: "İç Ortam Nemi",
+      sectionModes: "ÇALIŞMA MODU",
+      sectionAirflow: "HAVA AKIŞI VE KANAT YÖNLENDİRME",
+      fanSpeedSub: "FAN KADEMESİ",
+      verticalSwingTitle: "DİKEY KANAT SALINIMI (5 AÇI KADEMESİ + 1–5 OTO SALINIM)",
+      verticalSwingDesc: "5 sabit dikey kanat açısı kademesi (1. Kademe En Üst – 5. Kademe En Alt) veya 1'den 5'e sürekli yukarı-aşağı otomatik salınım modu seçilebilir.",
+      verticalSwingStages: {
+        s1:   { title: "1. Kademe", sub: "En Üst Açı", badge: "1. KADEME (EN ÜST)" },
+        s2:   { title: "2. Kademe", sub: "Üst-Orta Açı", badge: "2. KADEME (ÜST-ORTA)" },
+        s3:   { title: "3. Kademe", sub: "Orta Açı", badge: "3. KADEME (ORTA)" },
+        s4:   { title: "4. Kademe", sub: "Alt-Orta Açı", badge: "4. KADEME (ALT-ORTA)" },
+        s5:   { title: "5. Kademe", sub: "En Alt Açı", badge: "5. KADEME (EN ALT)" },
+        auto: { title: "Oto Salınım", sub: "1–5 Sürekli", badge: "1–5 OTO SALINIM AKTİF" }
+      },
+      sectionSpecial: "ÖZEL FONKSİYONLAR VE MODEL DONANIM YETENEKLERİ",
+      filterAll: "Tümü",
+      filterSupported: "Kullanılabilir",
+      filterUnsupported: "Bu Modelde Yok",
+      badgeActive: "AKTİF",
+      badgeSupported: "KAPALI · KULLANILABİLİR",
+      badgeUnsupported: "BU MODELDE YOK",
+      badgeBuzzerMuted: "SES KAPALI (ÖTMEZ)",
+      badgeBuzzerActive: "SES AÇIK (ÖTER)",
+      badgeScreenOn: "EKRAN AÇIK",
+      badgeScreenOff: "EKRAN KAPALI",
+      hwSupportedNote: "Bu klima modeli bu donanım özelliğini desteklemektedir.",
+      hwUnsupportedNote: "Bu klima modelinde ({model}) bu donanım modülü yer almamaktadır.",
+      schemaSourceCloud: "Donanım Şeması: hOn Bulut API",
+      schemaSourceAuto: "Donanım Şeması: Otomatik Model Profilleyici",
+      tempRangeTpl: "{mode} Modu Sınırı: {min}°C – {max}°C (Adım: {step}°C)",
+      tempEditHint: "Sayısal derece girmek için sıcaklığa tıklayın (Enter ile onayla)",
+      tempClampedMsg: "Girilen değer {mode} modu sınırlarına ({min}°C–{max}°C) uyarlandı: {val}°C",
+      modes: {
+        0: "Otomatik",
+        1: "Soğutma",
+        4: "Isıtma",
+        2: "Nem Alma",
+        6: "Fan"
+      },
+      fans: {
+        5: "Otomatik",
+        3: "Düşük",
+        2: "Orta",
+        1: "Yüksek"
+      },
+      swing: {
+        horizontal: {
+          name: "Yatay Kanat Salınımı (3D)",
+          desc: "Hava yönlendirme kanatlarını sağa-sola otomatik hareket ettirir."
+        }
+      },
+      features: {
+        rapidMode: {
+          name: "Turbo / Hızlı Mod",
+          desc: "Kompresör ve fanı maksimum kapasitede çalıştırarak odayı hızla hedef sıcaklığa ulaştırır."
+        },
+        muteStatus: {
+          name: "Sessiz Mod (Quiet)",
+          desc: "İç ünite fan devrini düşürerek ses seviyesini minimuma (yaklaşık 18-20 dB) indirir."
+        },
+        silentSleepStatus: {
+          name: "Gece Uyku Modu",
+          desc: "Uyku süresince vücut ısısı değişimine uyum sağlamak için sıcaklığı kademeli olarak dengeler."
+        },
+        healthMode: {
+          name: "UV-C / İyonizer Sağlık",
+          desc: "Dahili UV-C modülü ve negatif iyon jeneratörü ile havadaki bakteri ve alerjenleri nötralize eder."
+        },
+        selfCleaningStatus: {
+          name: "Self-Clean (Buz Çözme Temizliği)",
+          desc: "İç ünite eşanjörünü dondurup çözerek biriken toz ve kir tabakasını drenajdan uzaklaştırır."
+        },
+        selfCleaning56Status: {
+          name: "56°C Steri-Clean",
+          desc: "Eşanjörü 30 dakika boyunca 56°C yüksek sıcaklığa çıkararak bakteri ve virüsleri termal olarak sterilize eder."
+        },
+        energySavingStatus: {
+          name: "ECO Enerji Tasarrufu",
+          desc: "Kompresör frekansını sınırlandırarak elektrik tüketimini %20 ila %40 oranında azaltır."
+        },
+        "10degreeHeatingStatus": {
+          name: "10°C Donma Koruması",
+          desc: "Kışın uzun süre kullanılmayan mekanlarda oda sıcaklığının 10°C altına düşmesini engeller."
+        },
+        humanSensingStatus: {
+          name: "Eco-Pilot İnsan Sensörü",
+          desc: "Kızılötesi varlık sensörü ile odadaki kişilerin konumunu algılar ve hava akışını yönlendirir."
+        },
+        screenDisplayStatus: {
+          name: "Ünite LED Ekranı",
+          desc: "Klima iç ünitesi üzerindeki dijital sıcaklık göstergesini açar veya kapatır."
+        },
+        echoStatus: {
+          name: "Komut Sesli Uyarı (Buzzer)",
+          desc: "Klima komut aldığında iç üniteden çıkan onay bip sesini açar veya kapatır."
+        }
+      }
+    },
+    en: {
+      liveSyncBadge: "1s Live Sync",
+      topSubtitle: "Direct Cloud & Local Hardware Interface",
+      selectDevice: "UNIT:",
+      day: "Day",
+      night: "Night",
+      accountPreview: "hOn Cloud Login",
+      accountConnected: "Cloud Active",
+      autoDetectBadge: "Background Model Detection Active",
+      supportedStat: "Available Features",
+      unsupportedStat: "Not on this Model",
+      climateUnitPanel: "CLIMATE CONTROL UNIT",
+      powerOn: "RUNNING",
+      powerOff: "STANDBY",
+      targetTempCaption: "TARGET TEMPERATURE",
+      indoorSensor: "Indoor Temperature",
+      indoorHumidity: "Indoor Humidity",
+      sectionModes: "OPERATING MODE",
+      sectionAirflow: "AIRFLOW & LOUVER DIRECTION",
+      fanSpeedSub: "FAN SPEED",
+      verticalSwingTitle: "VERTICAL LOUVER SWING (5 ANGLES + 1–5 AUTO SWING)",
+      verticalSwingDesc: "Select from 5 fixed vertical louver angles (Stage 1 Top – Stage 5 Bottom) or continuous 1-to-5 up-and-down auto swing.",
+      verticalSwingStages: {
+        s1:   { title: "Stage 1", sub: "Highest Angle", badge: "STAGE 1 (TOP)" },
+        s2:   { title: "Stage 2", sub: "Upper-Mid", badge: "STAGE 2 (UPPER-MID)" },
+        s3:   { title: "Stage 3", sub: "Center Angle", badge: "STAGE 3 (CENTER)" },
+        s4:   { title: "Stage 4", sub: "Lower-Mid", badge: "STAGE 4 (LOWER-MID)" },
+        s5:   { title: "Stage 5", sub: "Lowest Angle", badge: "STAGE 5 (BOTTOM)" },
+        auto: { title: "Auto Swing", sub: "1–5 Continuous", badge: "1–5 AUTO SWING" }
+      },
+      sectionSpecial: "SPECIAL FUNCTIONS & MODEL HARDWARE CAPABILITIES",
+      filterAll: "All",
+      filterSupported: "Available",
+      filterUnsupported: "Not on Model",
+      badgeActive: "ACTIVE",
+      badgeSupported: "OFF · AVAILABLE",
+      badgeUnsupported: "NOT ON MODEL",
+      badgeBuzzerMuted: "BEEP MUTED",
+      badgeBuzzerActive: "BEEP ACTIVE",
+      badgeScreenOn: "DISPLAY ON",
+      badgeScreenOff: "DISPLAY OFF",
+      hwSupportedNote: "This AC model hardware supports this capability.",
+      hwUnsupportedNote: "This AC model ({model}) does not include the hardware module for this function.",
+      schemaSourceCloud: "Hardware Schema: hOn Cloud API",
+      schemaSourceAuto: "Hardware Schema: Auto Model Profiler",
+      tempRangeTpl: "{mode} Mode Limit: {min}°C – {max}°C (Step: {step}°C)",
+      tempEditHint: "Click temperature to enter a numeric value (Press Enter to apply)",
+      tempClampedMsg: "Value clamped to {mode} mode limits ({min}°C–{max}°C): {val}°C",
+      modes: {
+        0: "Auto",
+        1: "Cool",
+        4: "Heat",
+        2: "Dry",
+        6: "Fan"
+      },
+      fans: {
+        5: "Auto",
+        3: "Low",
+        2: "Medium",
+        1: "High"
+      },
+      swing: {
+        horizontal: {
+          name: "Horizontal Louver Swing (3D)",
+          desc: "Automatically oscillates the motorized horizontal louvers left and right."
+        }
+      },
+      features: {
+        rapidMode: {
+          name: "Turbo / Rapid Mode",
+          desc: "Drives the compressor and fan at maximum output to reach the target temperature rapidly."
+        },
+        muteStatus: {
+          name: "Quiet / Silent Mode",
+          desc: "Lowers indoor blower RPM to reduce acoustic noise down to whisper-quiet levels."
+        },
+        silentSleepStatus: {
+          name: "Night Sleep Curve",
+          desc: "Gradually modulates temperature overnight to match natural sleep thermoregulation."
+        },
+        healthMode: {
+          name: "UV-C / Ionizer Health",
+          desc: "Neutralizes airborne bacteria and allergens using the internal UV-C lamp or ion generator."
+        },
+        selfCleaningStatus: {
+          name: "Self-Clean (Cold Expansion)",
+          desc: "Freezes and rapidly thaws the evaporator coil to flush trapped dust and biofilm."
+        },
+        selfCleaning56Status: {
+          name: "56°C Steri-Clean",
+          desc: "Heats the indoor heat exchanger to 56°C for 30 minutes to thermally sterilize bacteria."
+        },
+        energySavingStatus: {
+          name: "ECO Energy Saving",
+          desc: "Caps compressor inverter frequency to reduce power consumption by 20–40%."
+        },
+        "10degreeHeatingStatus": {
+          name: "10°C Freeze Protection",
+          desc: "Prevents unoccupied rooms from dropping below 10°C during winter."
+        },
+        humanSensingStatus: {
+          name: "Eco-Pilot Presence Sensor",
+          desc: "Tracks occupant position via dual radar/IR sensors to direct or avoid direct airflow."
+        },
+        screenDisplayStatus: {
+          name: "Indoor LED Display",
+          desc: "Toggles the digital temperature LED readout on the indoor unit chassis."
+        },
+        echoStatus: {
+          name: "Command Audible Beep",
+          desc: "Enables or mutes the indoor unit confirmation beep when receiving commands."
+        }
+      }
+    }
+  };
+
+  function isCapSupported(capKey) {
+    if (!appState || !appState.capabilities) return true;
+    if (!(capKey in appState.capabilities)) return true;
+    const val = appState.capabilities[capKey];
+    if (typeof val === 'boolean') return val;
+    if (val && typeof val === 'object') return val.supported !== false;
+    return true;
+  }
+
+  async function syncUiPrefsToBackend() {
+    try {
+      await fetch('/api/ui-prefs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lang: currentLang, theme: currentTheme })
+      });
+    } catch (e) {}
+  }
+
+  function applyThemeVisuals(theme) {
+    currentTheme = theme === 'light' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    localStorage.setItem('hon_theme', currentTheme);
+    document.getElementById('btnThemeLight').classList.toggle('active', currentTheme === 'light');
+    document.getElementById('btnThemeDark').classList.toggle('active', currentTheme === 'dark');
+  }
+
+  function setTheme(theme, skipBackendSync) {
+    applyThemeVisuals(theme);
+    if (!skipBackendSync) {
+      syncUiPrefsToBackend();
+    }
+  }
+
+  let lastStateSignature = '';
+  let lastApplianceListSignature = '';
+  let isInitialFetch = true;
+
+  function computeStateSignature(state) {
+    if (!state) return '';
+    return JSON.stringify({
+      lang: currentLang,
+      theme: currentTheme,
+      filter: currentFilter,
+      mac: state.selectedMac,
+      cloud: state.isCloudConnected,
+      email: state.currentEmail,
+      apps: state.appliances,
+      params: state.parameters,
+      caps: state.capabilities,
+      profile: state.modelProfile
+    });
+  }
+
+  function setTextIfChanged(id, val) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const str = String(val !== undefined && val !== null ? val : '');
+    if (el.textContent !== str) {
+      el.textContent = str;
+    }
+  }
+
+  function applyLangVisuals(lang) {
+    currentLang = lang === 'en' ? 'en' : 'tr';
+    localStorage.setItem('hon_lang', currentLang);
+    document.getElementById('btnLangTr').classList.toggle('active', currentLang === 'tr');
+    document.getElementById('btnLangEn').classList.toggle('active', currentLang === 'en');
+  }
+
+  function setLang(lang, skipBackendSync) {
+    applyLangVisuals(lang);
+    lastStateSignature = '';
+    renderUI();
+    if (!skipBackendSync) {
+      syncUiPrefsToBackend();
+    }
+  }
+
+  function setFeatureFilter(filter) {
+    currentFilter = filter;
+    document.getElementById('tabFilterAll').classList.toggle('active', filter === 'all');
+    document.getElementById('tabFilterSupported').classList.toggle('active', filter === 'supported');
+    document.getElementById('tabFilterUnsupported').classList.toggle('active', filter === 'unsupported');
+    lastStateSignature = '';
+    renderUI();
+  }
+
+  async function fetchState() {
+    try {
+      const res = await fetch('/api/state', { cache: 'no-store' });
+      const nextState = await res.json();
+
+      if (isInitialFetch) {
+        isInitialFetch = false;
+        if (queryLang === 'tr' || queryLang === 'en') {
+          applyLangVisuals(queryLang);
+        } else if (nextState.uiLang === 'tr' || nextState.uiLang === 'en') {
+          applyLangVisuals(nextState.uiLang);
+        }
+        if (queryTheme === 'dark' || queryTheme === 'light') {
+          applyThemeVisuals(queryTheme);
+        } else if (nextState.uiTheme === 'dark' || nextState.uiTheme === 'light') {
+          applyThemeVisuals(nextState.uiTheme);
+        }
+      } else {
+        if ((nextState.uiLang === 'tr' || nextState.uiLang === 'en') && nextState.uiLang !== currentLang) {
+          applyLangVisuals(nextState.uiLang);
+        }
+        if ((nextState.uiTheme === 'dark' || nextState.uiTheme === 'light') && nextState.uiTheme !== currentTheme) {
+          applyThemeVisuals(nextState.uiTheme);
+        }
+      }
+
+      const nextSig = computeStateSignature(nextState);
+      appState = nextState;
+      if (nextSig !== lastStateSignature) {
+        lastStateSignature = nextSig;
+        renderUI();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function sendCommand(paramUpdates) {
+    try {
+      const res = await fetch('/api/command', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ parameters: paramUpdates })
+      });
+      appState = await res.json();
+      lastStateSignature = computeStateSignature(appState);
+      renderUI();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function onSelectAppliance(macAddress) {
+    try {
+      const res = await fetch('/api/select-appliance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ macAddress })
+      });
+      appState = await res.json();
+      lastStateSignature = computeStateSignature(appState);
+      renderUI();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function togglePower() {
+    if (!appState || !appState.parameters) return;
+    const next = Number(appState.parameters.onOffStatus) === 1 ? 0 : 1;
+    sendCommand({ onOffStatus: next });
+  }
+
+  let isEditingTemp = false;
+  let tempClampedNoticeTimer = null;
+
+  function getActiveModeTempLimits() {
+    const t = I18N[currentLang];
+    const mp = (appState && appState.modelProfile) ? appState.modelProfile : {};
+    const ac = (appState && appState.parameters) ? appState.parameters : {};
+    const modeCode = String(ac.machMode !== undefined ? ac.machMode : '1');
+    const modeName = t.modes[modeCode] || t.modes[1];
+
+    let minT = Number(mp.tempMin || 16);
+    let maxT = Number(mp.tempMax || 30);
+    let stepT = Number(mp.tempStep || 1);
+
+    if (mp.modeTempLimits && mp.modeTempLimits[modeCode]) {
+      const mLim = mp.modeTempLimits[modeCode];
+      if (mLim.min !== undefined) minT = Number(mLim.min);
+      if (mLim.max !== undefined) maxT = Number(mLim.max);
+      if (mLim.step !== undefined) stepT = Number(mLim.step);
+    }
+
+    return { min: minT, max: maxT, step: stepT, modeCode, modeName };
+  }
+
+  function startTempEdit() {
+    if (!appState || !appState.parameters) return;
+    isEditingTemp = true;
+    const spanEl = document.getElementById('valTargetTemp');
+    const inpEl = document.getElementById('inpTargetTemp');
+    if (!spanEl || !inpEl) return;
+
+    const currentVal = Number(appState.parameters.tempSel || 23).toFixed(0);
+    spanEl.style.display = 'none';
+    inpEl.style.display = 'inline-block';
+    inpEl.value = currentVal;
+    inpEl.focus();
+    inpEl.select();
+  }
+
+  function onTempInputSanitize(inputEl) {
+    const digitsOnly = inputEl.value.replace(/[^0-9]/g, '');
+    if (inputEl.value !== digitsOnly) {
+      inputEl.value = digitsOnly;
+    }
+  }
+
+  function onTempInputKeyDown(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      commitTempEdit(false);
+      return;
+    }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      commitTempEdit(true);
+      return;
+    }
+    const allowedControlKeys = [
+      'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'
+    ];
+    if (allowedControlKeys.indexOf(e.key) !== -1 || e.ctrlKey || e.metaKey) {
+      return;
+    }
+    if (!/^[0-9]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  }
+
+  function commitTempEdit(cancel) {
+    if (!isEditingTemp) return;
+    isEditingTemp = false;
+
+    const spanEl = document.getElementById('valTargetTemp');
+    const inpEl = document.getElementById('inpTargetTemp');
+    if (!spanEl || !inpEl) return;
+
+    const rawText = (inpEl.value || '').replace(/[^0-9]/g, '');
+    inpEl.style.display = 'none';
+    spanEl.style.display = '';
+
+    if (cancel || !rawText || !appState || !appState.parameters) {
+      return;
+    }
+
+    const parsed = parseInt(rawText, 10);
+    if (isNaN(parsed)) return;
+
+    const lim = getActiveModeTempLimits();
+    let finalTemp = parsed;
+    let wasClamped = false;
+
+    if (finalTemp < lim.min) {
+      finalTemp = lim.min;
+      wasClamped = true;
+    } else if (finalTemp > lim.max) {
+      finalTemp = lim.max;
+      wasClamped = true;
+    }
+
+    spanEl.textContent = String(finalTemp);
+
+    if (wasClamped) {
+      const t = I18N[currentLang];
+      const hintEl = document.getElementById('lblTempEditHint');
+      if (hintEl) {
+        hintEl.textContent = t.tempClampedMsg
+          .replace('{mode}', lim.modeName)
+          .replace('{min}', lim.min)
+          .replace('{max}', lim.max)
+          .replace('{val}', finalTemp);
+        if (tempClampedNoticeTimer) clearTimeout(tempClampedNoticeTimer);
+        tempClampedNoticeTimer = setTimeout(() => {
+          hintEl.textContent = I18N[currentLang].tempEditHint;
+        }, 4000);
+      }
+    }
+
+    sendCommand({ tempSel: finalTemp });
+  }
+
+  function stepTemperature(delta) {
+    if (!appState || !appState.parameters) return;
+    const lim = getActiveModeTempLimits();
+    let next = Number(appState.parameters.tempSel || 23) + (delta * lim.step);
+    if (next < lim.min) next = lim.min;
+    if (next > lim.max) next = lim.max;
+    sendCommand({ tempSel: next });
+  }
+
+  function renderUI() {
+    const t = I18N[currentLang];
+    setTextIfChanged('lblLiveSyncBadge', t.liveSyncBadge);
+    setTextIfChanged('lblTopSubtitle', t.topSubtitle);
+    setTextIfChanged('lblSelectDevice', t.selectDevice);
+    setTextIfChanged('lblDay', t.day);
+    setTextIfChanged('lblNight', t.night);
+    setTextIfChanged('lblAutoDetectBadge', t.autoDetectBadge);
+    setTextIfChanged('lblSupportedStat', t.supportedStat);
+    setTextIfChanged('lblUnsupportedStat', t.unsupportedStat);
+    setTextIfChanged('lblClimateUnitPanel', t.climateUnitPanel);
+    setTextIfChanged('lblTargetTempCaption', t.targetTempCaption);
+    setTextIfChanged('lblIndoorSensor', t.indoorSensor);
+    setTextIfChanged('lblIndoorHumidity', t.indoorHumidity);
+    setTextIfChanged('lblSectionModes', t.sectionModes);
+    setTextIfChanged('lblSectionAirflow', t.sectionAirflow);
+    setTextIfChanged('lblFanSpeedSub', t.fanSpeedSub);
+    setTextIfChanged('lblVerticalSwingTitle', t.verticalSwingTitle);
+    setTextIfChanged('tooltipVerticalSwingDesc', t.verticalSwingDesc);
+    setTextIfChanged('lblSectionSpecial', t.sectionSpecial);
+    setTextIfChanged('tabFilterAll', t.filterAll);
+    setTextIfChanged('tabFilterSupported', t.filterSupported);
+    setTextIfChanged('tabFilterUnsupported', t.filterUnsupported);
+
+    if (!appState) return;
+
+    // Bottom User Icon & Popover Account State
+    const dot = document.getElementById('dotAccount');
+    const lblAcc = document.getElementById('lblAccountBtn');
+    const lblStatus = document.getElementById('lblAccountStatus');
+    const lblMini = document.getElementById('lblRailUserMini');
+    const btnLogout = document.getElementById('btnLogoutAccount');
+    const lblSwitch = document.getElementById('lblSwitchAccountBtn');
+    const lblLogout = document.getElementById('lblLogoutBtn');
+    const isTr = currentLang === 'tr';
+
+    if (lblLogout) lblLogout.textContent = isTr ? 'Çıkış Yap' : 'Sign Out';
+
+    if (appState.isCloudConnected) {
+      dot.classList.remove('preview');
+      const emailStr = appState.currentEmail || t.accountConnected;
+      if (lblAcc && lblAcc.textContent !== emailStr) lblAcc.textContent = emailStr;
+      if (lblStatus) {
+        lblStatus.classList.remove('preview');
+        lblStatus.textContent = isTr ? 'hOn Bulut Hesabı Aktif' : 'hOn Cloud Active';
+      }
+      if (lblMini) {
+        const shortUser = emailStr.indexOf('@') > 0 ? emailStr.split('@')[0] : emailStr;
+        lblMini.textContent = shortUser;
+      }
+      if (btnLogout) btnLogout.style.display = 'inline-flex';
+      if (lblSwitch) lblSwitch.textContent = isTr ? 'Hesap Değiştir' : 'Switch Account';
+    } else {
+      dot.classList.add('preview');
+      const prevStr = isTr ? 'Giriş Yapılmadı (Demo)' : 'Not Signed In (Demo)';
+      if (lblAcc && lblAcc.textContent !== prevStr) lblAcc.textContent = prevStr;
+      if (lblStatus) {
+        lblStatus.classList.add('preview');
+        lblStatus.textContent = isTr ? 'Çevrimdışı Önizleme' : 'Offline Preview';
+      }
+      if (lblMini) lblMini.textContent = isTr ? 'Giriş Yap' : 'Sign In';
+      if (btnLogout) btnLogout.style.display = 'none';
+      if (lblSwitch) lblSwitch.textContent = isTr ? 'Giriş Yap' : 'Sign In';
+    }
+
+    // Connected appliances dropdown (listbox)
+    const sel = document.getElementById('selAppliance');
+    const appliances = appState.appliances || [];
+    const appListSig = JSON.stringify(appliances.map(a => `${a.macAddress}|${a.nickName}|${a.modelName}|${a.supportedCount}|${a.totalFeatures}`));
+    if (appListSig !== lastApplianceListSignature) {
+      lastApplianceListSignature = appListSig;
+      sel.innerHTML = '';
+      appliances.forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a.macAddress;
+        opt.textContent = `${a.nickName} — ${a.modelName} (${a.supportedCount}/${a.totalFeatures})`;
+        sel.appendChild(opt);
+      });
+    }
+    if (appState.selectedMac && sel.value !== appState.selectedMac) {
+      sel.value = appState.selectedMac;
+    }
+
+    // Model Recognition Banner
+    const dev = appState.appliance || {};
+    const mp = appState.modelProfile || {};
+    const modelCode = mp.modelName || dev.modelName || 'AS35RBAHRA-4';
+    setTextIfChanged('hwModelCode', modelCode);
+    setTextIfChanged('hwSeriesName', mp.series || dev.series || 'Haier Split AC');
+    setTextIfChanged('hwMacAddress', `MAC: ${dev.macAddress || appState.selectedMac || '--'}`);
+    setTextIfChanged('hwFirmware', `FW: ${mp.fwVersion || dev.fwVersion || '--'}`);
+    setTextIfChanged('hwDetectionSource', appState.isCloudConnected ? t.schemaSourceCloud : t.schemaSourceAuto);
+    setTextIfChanged('valSupportedCount', mp.supportedCount !== undefined ? mp.supportedCount : 0);
+    setTextIfChanged('valUnsupportedCount', mp.unsupportedCount !== undefined ? mp.unsupportedCount : 0);
+
+    // AC State & Circular Dial Progress
+    const ac = appState.parameters || {};
+    const isOn = Number(ac.onOffStatus) === 1;
+    setTextIfChanged('lblUnitNickName', dev.nickName || 'Haier Klima');
+    setTextIfChanged('lblPowerBadge', isOn ? t.powerOn : t.powerOff);
+    document.getElementById('btnPower').classList.toggle('on', isOn);
+
+    const activeModeName = t.modes[ac.machMode] || t.modes[1];
+    const activeFanName = t.fans[ac.windSpeed] || t.fans[5];
+    setTextIfChanged('lblActiveOperationSummary', isOn
+      ? `${activeModeName} · ${activeFanName} (${modelCode})`
+      : `${t.powerOff} · ${modelCode}`);
+
+    const targetTempVal = Number(ac.tempSel || 23);
+    if (!isEditingTemp) {
+      setTextIfChanged('valTargetTemp', targetTempVal.toFixed(0));
+    }
+    setTextIfChanged('valIndoorTemp', `${Number(ac.tempIndoor || 24).toFixed(1)} °C`);
+    setTextIfChanged('valIndoorHum', `%${ac.humidityIndoor || 45}`);
+
+    const lim = getActiveModeTempLimits();
+    setTextIfChanged('lblTempRangeInfo', t.tempRangeTpl
+      .replace('{mode}', lim.modeName)
+      .replace('{min}', lim.min)
+      .replace('{max}', lim.max)
+      .replace('{step}', lim.step));
+    if (!tempClampedNoticeTimer) {
+      setTextIfChanged('lblTempEditHint', t.tempEditHint);
+    }
+
+    // Update SVG Circular Dial Progress Arc
+    const arcEl = document.getElementById('dialArcProgress');
+    if (arcEl) {
+      const totalLen = 433.54;
+      const span = Math.max(1, lim.max - lim.min);
+      const frac = Math.max(0, Math.min(1, (targetTempVal - lim.min) / span));
+      const offset = isOn ? (totalLen * (1 - frac)) : totalLen;
+      arcEl.style.strokeDashoffset = offset.toFixed(2);
+    }
+
+    // Render Operating Modes (in-place DOM update)
+    const modeDefs = [
+      { id: 0, cap: 'machMode', icon: ICONS.auto },
+      { id: 1, cap: 'machMode', icon: ICONS.cool },
+      { id: 4, cap: 'machMode', icon: ICONS.heat },
+      { id: 2, cap: 'machMode', icon: ICONS.dry },
+      { id: 6, cap: 'machMode', icon: ICONS.fan }
+    ];
+    const gridModes = document.getElementById('gridModes');
+    modeDefs.forEach(m => {
+      const supported = isCapSupported(m.cap);
+      const active = isOn && Number(ac.machMode) === m.id && supported;
+      let btn = gridModes.querySelector(`button[data-mode-id="${m.id}"]`);
+      if (!btn) {
+        btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('data-mode-id', String(m.id));
+        btn.innerHTML = `
+          <div class="tile-icon">${m.icon}</div>
+          <div class="tile-title"></div>
+        `;
+        gridModes.appendChild(btn);
+      }
+      const nextClass = `ctrl-tile ${active ? 'active' : ''} ${!supported ? 'unsupported' : ''}`.trim();
+      if (btn.className !== nextClass) btn.className = nextClass;
+      const titleEl = btn.querySelector('.tile-title');
+      if (titleEl && titleEl.textContent !== t.modes[m.id]) {
+        titleEl.textContent = t.modes[m.id];
+      }
+      btn.onclick = supported ? () => sendCommand({ onOffStatus: 1, machMode: m.id }) : null;
+    });
+
+    // Render Fan Speeds (in-place DOM update)
+    const fanDefs = [5, 3, 2, 1];
+    const gridFan = document.getElementById('gridFan');
+    fanDefs.forEach(fId => {
+      const active = isOn && Number(ac.windSpeed) === fId;
+      let btn = gridFan.querySelector(`button[data-fan-id="${fId}"]`);
+      if (!btn) {
+        btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('data-fan-id', String(fId));
+        gridFan.appendChild(btn);
+      }
+      const nextClass = `pill-btn ${active ? 'active' : ''}`.trim();
+      if (btn.className !== nextClass) btn.className = nextClass;
+      if (btn.textContent !== t.fans[fId]) btn.textContent = t.fans[fId];
+      btn.onclick = () => sendCommand({ windSpeed: fId });
+    });
+
+    // Render 6 Functional Vertical Louver Swing Modes (5 Fixed Angles + 1-to-5 Continuous Auto Swing)
+    const vSwingSupported = isCapSupported('windDirectionVertical');
+    const currentVSwingVal = Number(ac.windDirectionVertical !== undefined ? ac.windDirectionVertical : 5);
+    const gridVStages = document.getElementById('gridVerticalSwingStages');
+    let activeVStageLabel = t.badgeUnsupported;
+
+    VERTICAL_SWING_STAGES.forEach(st => {
+      const stageMeta = t.verticalSwingStages[st.key];
+      const isStageActive = vSwingSupported && st.aliases.indexOf(currentVSwingVal) !== -1;
+      if (isStageActive) {
+        activeVStageLabel = stageMeta.badge;
+      }
+
+      let btn = gridVStages.querySelector(`button[data-vswing-val="${st.val}"]`);
+      if (!btn) {
+        btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('data-vswing-val', String(st.val));
+        btn.innerHTML = `
+          <div class="vswing-icon-box">${getVerticalStageSvg(st.angle, st.isAuto)}</div>
+          <div class="vswing-stage-title"></div>
+          <div class="vswing-stage-sub"></div>
+        `;
+        gridVStages.appendChild(btn);
+      }
+
+      const nextClass = `vswing-stage-btn ${isStageActive ? 'active' : ''} ${!vSwingSupported ? 'unsupported' : ''}`.trim();
+      if (btn.className !== nextClass) btn.className = nextClass;
+
+      const titleEl = btn.querySelector('.vswing-stage-title');
+      if (titleEl && titleEl.textContent !== stageMeta.title) titleEl.textContent = stageMeta.title;
+
+      const subEl = btn.querySelector('.vswing-stage-sub');
+      if (subEl && subEl.textContent !== stageMeta.sub) subEl.textContent = stageMeta.sub;
+
+      if (vSwingSupported) {
+        btn.onclick = () => sendCommand({ windDirectionVertical: st.val });
+      } else {
+        btn.onclick = null;
+      }
+    });
+
+    const vBadgeEl = document.getElementById('badgeVerticalSwingActive');
+    if (vBadgeEl) {
+      const nextVBadgeClass = `cap-badge ${!vSwingSupported ? 'unsupported' : 'on'}`;
+      if (vBadgeEl.className !== nextVBadgeClass) vBadgeEl.className = nextVBadgeClass;
+      if (vBadgeEl.textContent !== activeVStageLabel) vBadgeEl.textContent = activeVStageLabel;
+    }
+
+    const vHwEl = document.getElementById('tooltipVerticalSwingHw');
+    if (vHwEl) {
+      const vHwNote = vSwingSupported
+        ? t.hwSupportedNote
+        : t.hwUnsupportedNote.replace('{model}', modelCode);
+      vHwEl.className = `tooltip-hw-note ${vSwingSupported ? 'ok' : 'no'}`;
+      if (vHwEl.textContent !== vHwNote) vHwEl.textContent = vHwNote;
+    }
+
+    // Render Horizontal Swing Control (in-place DOM update)
+    const swingDefs = [
+      {
+        key: 'windDirectionHorizontal',
+        cap: 'windDirectionHorizontal',
+        icon: ICONS.swingH,
+        activeVal: 7,
+        offVal: 0,
+        meta: t.swing.horizontal
+      }
+    ];
+    const gridSwing = document.getElementById('gridSwing');
+    swingDefs.forEach(sw => {
+      const supported = isCapSupported(sw.cap);
+      const isSwinging = supported && Number(ac[sw.key]) === sw.activeVal;
+      const hwNote = supported
+        ? t.hwSupportedNote
+        : t.hwUnsupportedNote.replace('{model}', modelCode);
+
+      let row = gridSwing.querySelector(`div[data-swing-key="${sw.key}"]`);
+      if (!row) {
+        row = document.createElement('div');
+        row.setAttribute('data-swing-key', sw.key);
+        row.innerHTML = `
+          <div class="swing-lbl-group">
+            ${sw.icon}
+            <span class="swing-name-text"></span>
+          </div>
+          <div class="swing-actions">
+            <span class="cap-badge"></span>
+            <span class="info-trigger" onclick="event.stopPropagation()">i
+              <span class="info-tooltip">
+                <div class="tooltip-desc-text"></div>
+                <div class="tooltip-hw-note"></div>
+              </span>
+            </span>
+          </div>
+        `;
+        gridSwing.appendChild(row);
+      }
+
+      const nextRowClass = `swing-row ${!supported ? 'unsupported' : ''}`.trim();
+      if (row.className !== nextRowClass) row.className = nextRowClass;
+
+      const nameEl = row.querySelector('.swing-name-text');
+      if (nameEl && nameEl.textContent !== sw.meta.name) nameEl.textContent = sw.meta.name;
+
+      const badgeEl = row.querySelector('.cap-badge');
+      const nextBadgeClass = `cap-badge ${!supported ? 'unsupported' : (isSwinging ? 'on' : 'supported')}`;
+      const nextBadgeText = !supported ? t.badgeUnsupported : (isSwinging ? t.badgeActive : t.badgeSupported);
+      if (badgeEl) {
+        if (badgeEl.className !== nextBadgeClass) badgeEl.className = nextBadgeClass;
+        if (badgeEl.textContent !== nextBadgeText) badgeEl.textContent = nextBadgeText;
+      }
+
+      const descEl = row.querySelector('.tooltip-desc-text');
+      if (descEl && descEl.textContent !== sw.meta.desc) descEl.textContent = sw.meta.desc;
+
+      const noteEl = row.querySelector('.tooltip-hw-note');
+      const nextNoteClass = `tooltip-hw-note ${supported ? 'ok' : 'no'}`;
+      if (noteEl) {
+        if (noteEl.className !== nextNoteClass) noteEl.className = nextNoteClass;
+        if (noteEl.textContent !== hwNote) noteEl.textContent = hwNote;
+      }
+
+      if (supported) {
+        row.style.cursor = 'pointer';
+        row.onclick = () => {
+          const payload = {};
+          payload[sw.key] = isSwinging ? sw.offVal : sw.activeVal;
+          sendCommand(payload);
+        };
+      } else {
+        row.style.cursor = 'not-allowed';
+        row.onclick = null;
+      }
+    });
+
+    // Render Special Functions & Model Capability Matrix (in-place DOM update)
+    const featureDefs = [
+      { key: 'rapidMode',             cap: 'rapidMode',             icon: ICONS.turbo },
+      { key: 'muteStatus',            cap: 'muteStatus',            icon: ICONS.silent },
+      { key: 'silentSleepStatus',     cap: 'silentSleepStatus',     icon: ICONS.sleep },
+      { key: 'energySavingStatus',    cap: 'energySavingStatus',    icon: ICONS.eco },
+      { key: 'healthMode',            cap: 'healthMode',            icon: ICONS.health },
+      { key: 'selfCleaningStatus',    cap: 'selfCleaningStatus',    icon: ICONS.selfClean },
+      { key: 'selfCleaning56Status',  cap: 'selfCleaning56Status',  icon: ICONS.steri56 },
+      { key: '10degreeHeatingStatus', cap: '10degreeHeatingStatus', icon: ICONS.vacation },
+      { key: 'humanSensingStatus',    cap: 'humanSensingStatus',    icon: ICONS.ecoSensor },
+      { key: 'screenDisplayStatus',   cap: 'screenDisplayStatus',   icon: ICONS.displayLed },
+      { key: 'echoStatus',            cap: 'echoStatus',            icon: ICONS.silent }
+    ];
+
+    const gridFeatures = document.getElementById('gridFeatures');
+
+    featureDefs.forEach(ft => {
+      const supported = isCapSupported(ft.cap);
+      const visible = !(
+        (currentFilter === 'supported' && !supported) ||
+        (currentFilter === 'unsupported' && supported)
+      );
+
+      let card = gridFeatures.querySelector(`div[data-feature-key="${ft.key}"]`);
+      if (!card) {
+        card = document.createElement('div');
+        card.setAttribute('data-feature-key', ft.key);
+        card.innerHTML = `
+          <div class="feature-top">
+            <div class="feature-icon-wrap">${ft.icon}</div>
+            <div class="feature-badges-right">
+              <span class="cap-badge"></span>
+              <span class="info-trigger" onclick="event.stopPropagation()">i
+                <span class="info-tooltip">
+                  <div class="tooltip-desc-text"></div>
+                  <div class="tooltip-hw-note"></div>
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="feature-bottom">
+            <div class="feature-name"></div>
+          </div>
+        `;
+        gridFeatures.appendChild(card);
+      }
+
+      card.style.display = visible ? '' : 'none';
+      if (!visible) return;
+
+      const isActive = supported && Number(ac[ft.key]) > 0;
+      const meta = t.features[ft.key];
+      const hwNote = supported
+        ? t.hwSupportedNote
+        : t.hwUnsupportedNote.replace('{model}', modelCode);
+
+      let badgeLabel = !supported ? t.badgeUnsupported : (isActive ? t.badgeActive : t.badgeSupported);
+      if (supported && ft.key === 'echoStatus') {
+        badgeLabel = isActive ? t.badgeBuzzerMuted : t.badgeBuzzerActive;
+      } else if (supported && ft.key === 'screenDisplayStatus') {
+        badgeLabel = isActive ? t.badgeScreenOn : t.badgeScreenOff;
+      }
+
+      const nextCardClass = `feature-card ${isActive ? 'active' : ''} ${!supported ? 'unsupported' : ''}`.trim();
+      if (card.className !== nextCardClass) card.className = nextCardClass;
+
+      const badgeEl = card.querySelector('.cap-badge');
+      const nextBadgeClass = `cap-badge ${!supported ? 'unsupported' : (isActive ? 'on' : 'supported')}`;
+      if (badgeEl) {
+        if (badgeEl.className !== nextBadgeClass) badgeEl.className = nextBadgeClass;
+        if (badgeEl.textContent !== badgeLabel) badgeEl.textContent = badgeLabel;
+      }
+
+      const descEl = card.querySelector('.tooltip-desc-text');
+      if (descEl && descEl.textContent !== meta.desc) descEl.textContent = meta.desc;
+
+      const noteEl = card.querySelector('.tooltip-hw-note');
+      const nextNoteClass = `tooltip-hw-note ${supported ? 'ok' : 'no'}`;
+      if (noteEl) {
+        if (noteEl.className !== nextNoteClass) noteEl.className = nextNoteClass;
+        if (noteEl.textContent !== hwNote) noteEl.textContent = hwNote;
+      }
+
+      const nameEl = card.querySelector('.feature-name');
+      if (nameEl && nameEl.textContent !== meta.name) nameEl.textContent = meta.name;
+
+      if (supported) {
+        card.onclick = () => {
+          const payload = {};
+          payload[ft.key] = isActive ? 0 : 1;
+          sendCommand(payload);
+        };
+      } else {
+        card.onclick = null;
+      }
+    });
+  }
+
+  function openLoginModal() {
+    const wrap = document.getElementById('railUserWrap');
+    if (wrap) wrap.classList.remove('open');
+    document.getElementById('lblLoginError').style.display = 'none';
+    document.getElementById('modalLogin').classList.add('open');
+  }
+
+  function closeLoginModal() {
+    document.getElementById('modalLogin').classList.remove('open');
+  }
+
+  async function logoutCloudAccount() {
+    try {
+      const wrap = document.getElementById('railUserWrap');
+      if (wrap) wrap.classList.remove('open');
+      const res = await fetch('/api/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}'
+      });
+      appState = await res.json();
+      lastStateSignature = computeStateSignature(appState);
+      renderUI();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function submitCloudLogin() {
+    const email = document.getElementById('inpEmail').value.trim();
+    const password = document.getElementById('inpPassword').value;
+    const errEl = document.getElementById('lblLoginError');
+    errEl.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        errEl.textContent = data.message || 'Giriş başarısız oldu.';
+        errEl.style.display = 'block';
+        return;
+      }
+      closeLoginModal();
+      fetchState();
+    } catch (e) {
+      errEl.textContent = e.message;
+      errEl.style.display = 'block';
+    }
+  }
+
+  // Initialize theme, lang, and poll state
+  setTheme(currentTheme, true);
+  setLang(currentLang, true);
+  if (queryLang || queryTheme) {
+    syncUiPrefsToBackend();
+  }
+  fetchState();
+  setInterval(fetchState, 1000);
+</script>
+</body>
+</html>
